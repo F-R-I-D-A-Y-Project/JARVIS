@@ -1,11 +1,8 @@
 import sys
 import pathlib
-import csv
-from time import sleep
 
 sys.path.append(str(pathlib.Path(__file__).parent.parent.absolute()))
 
-from shell.process import Process
 from model.model import Model
 import tkinter as tk
 from typing import Self
@@ -30,9 +27,8 @@ class HMI:
         This class is the GUI of the chatbot.
     '''
 
-    def __init__(self: Self, model: Model, proc: Process) -> None:
+    def __init__(self: Self, model: Model) -> None:
         self.__model = model
-        self.__proc = proc
         self.__answer = ''
         self.__gui = tk.Tk()
         self.initialize()
@@ -55,7 +51,6 @@ class HMI:
         '''
             This method initializes the GUI.
         '''
-        self.model.fit()
         self.gui.title("Chat")
         self.gui.resizable(width=True, height=True)
         self.gui.configure(width=470, height=550, bg=BG_COLOR)
