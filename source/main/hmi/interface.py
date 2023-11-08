@@ -6,7 +6,7 @@ from time import sleep
 sys.path.append(str(pathlib.Path(__file__).parent.parent.absolute()))
 
 from shell.process import Process
-from model.GPT import GPT
+from model.model import Model
 import tkinter as tk
 from typing import Self
 
@@ -30,7 +30,7 @@ class HMI:
         This class is the GUI of the chatbot.
     '''
 
-    def __init__(self: Self, model: GPT, proc: Process) -> None:
+    def __init__(self: Self, model: Model, proc: Process) -> None:
         self.__model = model
         self.__proc = proc
         self.__answer = ''
@@ -122,15 +122,6 @@ class HMI:
         
         self.__send(message, event)
 
-    def regenerate_response(self: Self, event: tk.Event|None=None) -> None:
-        '''
-            This method is called when the regenerate button is hit, resending the previous prompt to the bot.
-
-            Args:
-                event (tk.Event): The event that triggered the method.
-        '''
-        self.__send(self.__user_input, event)
-
     def __send(self: Self, message: str, event: tk.Event|None=None) -> None:
         '''
 
@@ -144,16 +135,6 @@ class HMI:
         self.text_area.insert(tk.END, self.__answer + ("\n" * 2))
         self.text_area.configure(state=tk.DISABLED)
 
-    def approved(self: Self, event: tk.Event|None=None) -> None:
-        '''
-            This method is called when the like button is hit, triggering a change in the training dataset of the bot.
-
-            Args:
-                event (tk.Event): The event that triggered the method.
-        '''
-        with (pathlib.Path(__file__).parent.parent.parent.parent / 'datasets' / 'approved.csv').open('a') as dataset:
-            csv.writer(dataset).writerow([self.__user_input, self.__answer])
-        self.model.check_db_change()
 
     def answer_to(self: Self, message: str) -> str:
         '''
