@@ -121,8 +121,6 @@ class HMI:
         '''
 
         '''
-        while (answer := self.answer_to(message)) == self.__answer:
-            continue
         self.__answer = self.answer_to(message)
         self.text_area.configure(state=tk.NORMAL)
         self.text_area.insert(tk.END, "You: " + message + '\n\n')

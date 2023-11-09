@@ -8,7 +8,7 @@ from model.model import Model
 
 
 def main():
-    model = Model('datasets/example.txt')
+    model = Model()
     hmi = HMI(model)
     try:
         hmi.run()

@@ -10,32 +10,32 @@ class ResponseBuilder:
         self.dictionary = {}
 
     def get(self, sentence: str) -> str: 
-        if(data_base_texts==[]):
-            populate_dictionary()
-        featureVectors = np.zeros((len(data_base_texts),len(dictionary)))
+        if(self.data_base_texts==[]):
+            self.populate_dictionary()
+        featureVectors = np.zeros((len(self.data_base_texts),len(self.dictionary)))
 
-        for i in range(len(data_base_texts)):
-            for word in data_base_texts[i].split(" ") :
-                featureVectors[i][dictionary[pre_process_text(word)]]+=1
-        inputFeatureVector = np.zeros(len(dictionary))
+        for i in range(len(self.data_base_texts)):
+            for word in self.data_base_texts[i].split(" ") :
+                featureVectors[i][self.dictionary[self.preprocess_text(word)]]+=1 #!!!!!!!!!!!!!!!!!
+        inputFeatureVector = np.zeros(len(self.dictionary))
 
         for word in sentence.split(" "):
-            preprocess_word = preprocess_text(word)
-            if preprocess_word in dictionary:
-                inputFeatureVector[dictionary[preprocess_word]]+=1
+            preprocess_word = self.preprocess_text(word)
+            if preprocess_word in self.dictionary:
+                inputFeatureVector[self.dictionary[preprocess_word]]+=1
         
-        max_similarity = -1.0;
-        most_similar_index = -1;
+        max_similarity = -1.0
+        most_similar_index = -1
 
         for i in range(len(featureVectors)):
-            similarity = calculate_cosine_similarity(inputFeatureVector, featureVectors[i]);
+            similarity = self.calculate_cosine_similarity(inputFeatureVector, featureVectors[i])
             if (similarity > max_similarity):
                 max_similarity = similarity
                 most_similar_index = i
-        with open('exemplo.csv', mode='r') as file:
+        with open(self.dataset) as file:
             csv_reader = csv.reader(file,delimiter=';')
             for row in csv_reader:
-                if row[0]==data_base_texts[most_similar_index]:
+                if row[0]==self.data_base_texts[most_similar_index]:
                     return row[1]
         return ""
         
@@ -43,14 +43,16 @@ class ResponseBuilder:
     def populate_dictionary(self):
         data_base_texts = []
         num=0
+        final_txt=""
         dictionary = {}
-        with open('exemplo.csv', mode='r') as file:
+        with open(self.dataset) as file:
             csv_reader = csv.reader(file)
             for row in csv_reader:
-                for str in row:
-                    final_txt+=str
-                    dictionary[preprocess_text(str)]=num;
-                    num+=1;
+                for s in row:
+                    final_txt+=s
+                    print(self.preprocess_text(s), sep="\n") #!!!!!!!!!!!!!
+                    dictionary[self.preprocess_text(s)]=num
+                    num+=1
                 data_base_texts.append(final_txt.split(";")[0])
         self.data_base_texts = data_base_texts
         self.dictionary = dictionary
@@ -59,8 +61,6 @@ class ResponseBuilder:
     def preprocess_text(self, text: str) -> str:
         return re.sub(r'[^\w\s;]', '', text).lower()
 
-    #morreu com o dictionary
-    def __get_word_index(self, word: str, string_set: set[str]) -> int: ...
 
     def __calculate_cosine_similarity(self, vectorA, vectorB) -> float:
         return np.dot(vectorA,vectorB)/(np.dot(vectorA,vectorA)*np.dot(vectorB,vectorB))**0.5
@@ -84,5 +84,6 @@ class Model:
                 else:
                     final_answer += response + '. '
                 final_answer += '\n'
+        return final_answer
 
     __call__ = answer
