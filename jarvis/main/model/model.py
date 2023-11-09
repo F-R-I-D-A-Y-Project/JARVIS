@@ -2,6 +2,7 @@ import pathlib
 import re
 import csv
 import numpy as np
+from pprint import pprint
 
 class ResponseBuilder:
     def __init__(self, path_to_dataset: str) -> None:
@@ -13,10 +14,9 @@ class ResponseBuilder:
         if(self.data_base_texts==[]):
             self.populate_dictionary()
         featureVectors = np.zeros((len(self.data_base_texts),len(self.dictionary)))
-
         for i in range(len(self.data_base_texts)):
             for word in self.data_base_texts[i].split(" ") :
-                featureVectors[i][self.dictionary[self.preprocess_text(word)]]+=1 #!!!!!!!!!!!!!!!!!
+                featureVectors[i][self.dictionary[self.preprocess_text(word)]]+=1 
         inputFeatureVector = np.zeros(len(self.dictionary))
 
         for word in sentence.split(" "):
@@ -41,30 +41,26 @@ class ResponseBuilder:
         
 
     def populate_dictionary(self):
-        data_base_texts = []
         num=0
-        final_txt=""
-        dictionary = {}
         with open(self.dataset) as file:
-            csv_reader = csv.reader(file)
+            csv_reader = csv.reader(file, delimiter=';')
             for row in csv_reader:
-                for s in row:
-                    final_txt+=s
-                    print(self.preprocess_text(s), sep="\n") #!!!!!!!!!!!!!
-                    dictionary[self.preprocess_text(s)]=num
-                    num+=1
-                data_base_texts.append(final_txt.split(";")[0])
-        self.data_base_texts = data_base_texts
-        self.dictionary = dictionary
+                self.data_base_texts.append(row[0])
+                for s in row[0].split(" "):
+                    if self.preprocess_text(s) not in self.dictionary.keys():
+                        self.dictionary[self.preprocess_text(s)]=num
+                        num+=1
 
 
     def preprocess_text(self, text: str) -> str:
         return re.sub(r'[^\w\s;]', '', text).lower()
 
 
-    def __calculate_cosine_similarity(self, vectorA, vectorB) -> float:
-        return np.dot(vectorA,vectorB)/(np.dot(vectorA,vectorA)*np.dot(vectorB,vectorB))**0.5
-
+    def calculate_cosine_similarity(self, vectorA, vectorB) -> float:
+        if np.dot(vectorA,vectorA)*np.dot(vectorB,vectorB) != 0:
+            return np.dot(vectorA,vectorB)/(np.dot(vectorA,vectorA)*np.dot(vectorB,vectorB))**0.5
+        else:
+            return np.inf
 
 
 class Model:
