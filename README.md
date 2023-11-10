@@ -1,12 +1,11 @@
-# F.R.I.D.A.Y
+# J.A.R.V.I.S
 
 
 Python project developed for the discipline "Laboratório de Programação 2", at "Instituto Militar de Engenharia"
 
 ## About 
 
-F.R.I.D.A.Y is a chatbot and personal assistant AI developed in Python. Capable of answering question made by user and executing shell commands for the user. It was developed using the Transformers architecture, and 
-it is serialized so the model doesn't need to be trained every time
+J.A.R.V.I.S is a chatbot and personal assistant AI developed in Python, capable of answering question made by user. Developed using the similarity technique.
 
 ## Team members
 
@@ -16,54 +15,26 @@ it is serialized so the model doesn't need to be trained every time
 
 ## Compatibility
 
-F.R.I.D.A.Y is compatible with Python 3.10+
+J.A.R.V.I.S is compatible with Python 3.10+
 
-### Packages used
-
-### Shell interaction
-- [pexpect](https://pexpect.readthedocs.io/en/stable/)
-- [platform](https://docs.python.org/3/library/platform.html)
-### Model creation
-- [pytorch](https://pytorch.org/docs/stable/index.html)
-- [torchtext](https://pytorch.org/text/stable/index.html)
-- [tiktoken](https://github.com/openai/tiktoken)
-### Documentation
-- [sphinx](https://www.sphinx-doc.org/en/master/)
-### GUI
-- [tkinter](https://docs.python.org/3/library/tkinter.html)
-### STL
+### Libraries used used
+- [numpy](https://numpy.org/)
 - [subprocess](https://docs.python.org/3/library/subprocess.html)
 - [sys](https://docs.python.org/3/library/sys.html)
-- [time](https://docs.python.org/3/library/time.html)
 - [pathlib](https://docs.python.org/3/library/pathlib.html)
 - [csv](https://docs.python.org/3/library/csv.html)
-- [pickle](https://docs.python.org/3/library/pickle.html)
-
 
 ## How to use
-To create and activate the Python virtual environment, use:
-
-- On Linux:
-
-``` sh
-source init_venv.sh
-activate_venv
+To use J.A.R.V.I.S, you must first install numpy:
+```sh
+pip install numpy
 ```
-
-- On Windows:
-``` ps1
-. .\init_venv.ps1
-InitVenv
+then, clone this directory and cd to it:
+```sh
+git clone https://github.com/F-R-I-D-A-Y-Project/JARVIS/
+cd JARVIS
 ```
-
-Then, all you have to do is run :
-
-``` sh
-friday run
+finally, at the cloned directory just run:
+```sh
+python jarvis
 ```
-
-on your terminal after executing ``` source init_venv.sh``` (or ``` . .\init_venv.ps1```)
-
-## Documentation
-
-The documentation can be found [here](https://github.com/F-R-I-D-A-Y-Project/F.R.I.D.A.Y-Python/docs)
